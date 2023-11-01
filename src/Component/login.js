@@ -1,65 +1,89 @@
-// import React from 'react';
+// import React, { useState } from 'react';
 // import './login.css';
 // import { useDispatch } from 'react-redux';
 // import { userLogin } from '../../action/login.action';
-
+// import { useNavigate } from 'react-router-dom';
 
 // const Index = (props) => {
 
 //   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+//   const [username, setUsername] = useState('');
+//   const [password, setPassword] = useState('');
 
-//   // const [username, setUsername] = useState('');
-//   // const [password, setPassword] = useState('');
-
-//   const handleLogin = async (data) => {
-//     console.log('data: ', data);
-//     const { username, password } = data
+//   const handleLogin = () => {
 //     const body = { username, password }
 //     dispatch(userLogin(body))
-//     if (userLogin) {
-//       localStorage.setItem('token', data);
-//       window.location.href = "/dashboard"
+//     localStorage.getItem('token');
+//     if (username === 'kminchelle' && password === '0lelplR') {
+//       navigate('/dashboard');
+
 //     } else {
-//       console.log("Wrong password or username");
+//       alert('No user profile found LogIn Now');
 //     }
+//   }
+//   // const handleLogin = async (data) => {
+//   //   const { username, password } = data;
+//   //   const body = { username, password };
 
+//   //   try {
+//   //     // Dispatch the login action and wait for the response
+//   //     const response = await dispatch(userLogin(body));
+
+//   //     if (response && response.token) {
+//   //       // Successful login, set the token in localStorage
+//   //       localStorage.setItem('token', response.token);
+//   //       // Redirect to the dashboard
+//   //       window.location.href = "/dashboard";
+//   //     } else {
+//   //       console.log("Wrong password or username");
+//   //     }
+//   //   } catch (error) {
+//   //     console.log("Error occurred during login:", error);
+//   //   }
+//   // };
+
+
+
+
+//   const onUser = (event) => {
+//     setUsername(event.target.value);
 //   };
-
-
-
-
-//   // const onUser = (event) => {
-//   //   setUsername(event.target.value);
-//   // };
-//   // const onPass = (event) => {
-//   //   setPassword(event.target.value);
-//   // };
+//   const onPass = (event) => {
+//     setPassword(event.target.value);
+//   };
 //   return (
 //     <>
-//       <div class="background">
-//         <div class="shape"></div>
-//         <div class="shape"></div>
+//       <div class="content">
+//         <div class="text">
+//           Login Form
+//         </div>
+//         <form action="#">
+//           <div class="field">
+//             <input type="text" onChange={onUser} required />
+//             <span class="fas fa-user"></span>
+//             <label>username</label>
+//           </div>
+//           <div class="field">
+//             <input type="password" onChange={onPass} required />
+//             <span class="fas fa-lock"></span>
+//             <label>Password</label>
+//           </div>
+
+//           <button onClick={handleLogin}>Sign in</button>
+
+//         </form>
 //       </div>
-//       <form onSubmit={handleLogin}>
-//         <h3>Login Here</h3>
-
-//         <label for="username">Username</label>
-//         <input type="username" placeholder="username" id="username" />
-
-//         <label for="password">Password</label>
-//         <input type="password" placeholder="Password" id="password" />
-
-//         <button type='submit'>Log In</button>
-
-//       </form>
 //     </>
 
 //   )
 // }
 // export default Index;
+
+
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { userLogin } from '../../action/login.action';
+import { userLogin } from '../store/action/login.action';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Input } from 'antd';
 
@@ -98,9 +122,9 @@ const Index = (props) => {
   // };
   // const handleLogin = async () => {
   //   try {
-  //     const response = await userLogin(username, password); 
-  //     const token = response.token; 
-  //     localStorage.setItem('token', token); 
+  //     const response = await userLogin(username, password);
+  //     const token = response.token;
+  //     localStorage.setItem('token', token);
 
 
   //     window.location.href = "/dashboard";
