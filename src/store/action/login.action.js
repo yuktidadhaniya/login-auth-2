@@ -131,13 +131,15 @@ export const editListFailure = payload => {
 
 
 export const editProduct = (body, id) => async dispatch => {
+    console.log('id: ', id);
+    console.log('body111111111111111: ', body);
     dispatch(editList());
 
     axios
         .put(`https://dummyjson.com/products/${id}`, body)
         .then(res => {
-            console.log('res: ', res);
-            dispatch(editListSuccess(res.data));
+            console.log('res111111111111: ', res);
+            dispatch(editListSuccess(res.data.data));
         })
         .catch((error) => console.log(error));
 };
@@ -168,13 +170,13 @@ export const deleteListFailure = payload => {
 
 
 export const deleteProduct = (id) => async dispatch => {
-    dispatch(editList());
+    dispatch(deleteList());
 
     axios
         .delete(`https://dummyjson.com/products/${id}`)
         .then(res => {
-            console.log('res: ', res);
-            dispatch(editListSuccess(res.data.id));
+            console.log('res2222222222: ', res);
+            dispatch(deleteListSuccess(res.data.id));
         })
         .catch((error) => console.log(error));
 };

@@ -19,8 +19,10 @@ import {
 const initialState = {
   users: [],
   list: [],
+  
   isLoading: false,
 };
+
 
 const authReducer = (state = initialState, action) => {
   console.log('state: ', state);
@@ -68,11 +70,18 @@ const authReducer = (state = initialState, action) => {
         isLoading: true,
       };
     case ADD_PRODUCT_SUCCESS:
+      const newList = action.payload;
+      console.log('action.payload.list: ', action.payload);
+      console.log('newList: ', newList);
+      const list = Array.isArray(state.list) ? state.list : [];
+      const updatedList = [newList, ...list];
       return {
         ...state,
         isLoading: false,
-        list: [...state.list, action.payload]
+        list: updatedList,
       };
+
+
     case ADD_PRODUCT_FAILURE:
       return {
         ...state,
@@ -86,17 +95,20 @@ const authReducer = (state = initialState, action) => {
 
       };
     case EDIT_PRODUCT_SUCCESS: {
-     
+      const { id } = action.payload || {};
+      console.log('action.payload1111111111: ', action.payload);
+      console.log('id: ', id);
 
-      let updateList;
-      console.log('updateList: ', updateList);
-      updateList = state.list.map(user => {
-        if (user.id === action.payload.id) {
+      const updateList = Array.isArray(state.list) ? state.list.map(user => {
+        console.log('user1111: ', user);
+        if (user.id === id) {
           return action.payload;
         } else {
           return user;
         }
-      });
+      }) : [];
+
+      console.log('updateList:', updateList);
 
       return {
         ...state,
@@ -104,6 +116,9 @@ const authReducer = (state = initialState, action) => {
         list: updateList,
       };
     }
+
+
+
 
     case EDIT_PRODUCT_FAILURE:
       return {
@@ -119,10 +134,15 @@ const authReducer = (state = initialState, action) => {
 
       };
     case DELETE_PRODUCT_SUCCESS: {
-      let updatedProductList;
-      updatedProductList = state.list.filter(
-        list => list.id !== action.payload,
-      );
+      const deletedProductId = action.payload;
+      console.log('action.payload:', action.payload);
+
+
+      console.log('state:', state);
+      console.log('state.list:', state.list);
+
+      const updatedProductList = state.list.filter(product => product.id !== deletedProductId);
+      console.log('updatedProductList:', updatedProductList);
 
       return {
         ...state,
@@ -130,6 +150,9 @@ const authReducer = (state = initialState, action) => {
         list: updatedProductList,
       };
     }
+
+
+
     case DELETE_PRODUCT_FAILURE:
       return {
         ...state,

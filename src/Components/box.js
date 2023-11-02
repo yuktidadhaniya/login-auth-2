@@ -131,6 +131,7 @@ const Box = (props) => {
   const showModal = (user) => {
     console.log('user: ', user);
     let newObj = Object.assign({}, user);
+    console.log('newObj: ', newObj);
 
     setIsModalOpen(true);
     setModalData(newObj);
