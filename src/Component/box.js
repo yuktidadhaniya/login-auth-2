@@ -5,8 +5,8 @@ import {
   Menu,
   theme,
   Card,
-
-
+  Watermark,
+  Rate,
   Button,
   Modal,
   message,
@@ -16,7 +16,7 @@ import {
 
 } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 // import {
 //   fetchAllUsers,
@@ -30,10 +30,11 @@ import { Spin } from 'antd';
 import Addproduct from "./Addproduct"
 
 const Box = (props) => {
+  const navigate = useNavigate()
 
   const { Header, Content, Sider } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   console.log('loading: ', loading);
 
   const [modalData, setModalData] = useState({});
@@ -50,7 +51,7 @@ const Box = (props) => {
   const menulist = [
     { name: 'charts', path: '/charts' },
     { name: 'contact', path: '/contact' },
-    { name: 'back', path: './dashboard' },
+    { name: 'back', path: './box' },
     { name: 'login', path: '/' },
   ];
 
@@ -85,14 +86,25 @@ const Box = (props) => {
   console.log('list: ', list);
 
 
+
+
   // const handleSuccessFetchData = (e) => {
   //   console.log('e: ', e);
   //   setLoading(false);
   // };
 
   useEffect(() => {
-    dispatch(fetchAllUsers());
+    setLoading(true);
+    dispatch(fetchAllUsers())
+      .then(() => {
+        setLoading(false); 
+      })
+      .catch((error) => {
+        setLoading(false); 
+      
+      });
   }, []);
+  
 
 
 
@@ -160,13 +172,32 @@ const Box = (props) => {
     setIsModalOpen(false);
   };
 
+  const viewCard = (id) => {
+    navigate(`/viewcard/${id}`);
+  };
 
-
-
+  const handleDelete = (user) => {
+    Modal.confirm({
+      title: user.title,
+      content: 'Are you sure you want to delete this product?',
+      okText: 'Delete',
+      cancelText: 'Cancel',
+      onOk() {
+        // Call the deleteProduct action here
+        dispatch(deleteProduct(user.id));
+        
+      },
+      onCancel() {
+      
+      },
+    });
+  };
+  
 
   return (
     <>
       <Layout>
+
         <Header className="header">
           <div className="logo" />
           <Menu
@@ -225,52 +256,65 @@ const Box = (props) => {
 
                 <Addproduct />
               </div>
-
+              <h1 style={{ textAlign: "center" }}>
+                Product's Details
+              </h1>
               {loading ? (
                 <Spin size="large" />
               ) : (
-                <Card>
-                  {list.products?.map((user) => (
+                <Watermark content="Product">
+                  <Card>
 
-                    <Card.Grid style={gridStyle}>
-                      <>
-                        <p>title: {user.title}</p>
-                        <p>price: {user.price}</p>
-                        <p>rating: {user.rating}</p>
+                    {list.products?.map((user) => (
 
-                        <p>stock: {user.stock}</p>
-                        <p>brand: {user.brand}</p>
+                      <Card.Grid style={gridStyle}>
+                        <>
+                          <p>title: {user.title}</p>
+                          <p>price: {user.price}</p>
+                          <p>rating: {user.rating}</p>
 
-                        <p>discountPercentage : {user.discountPercentage}</p>
+                          <p>stock: {user.stock}</p>
+                          <p>brand: {user.brand}</p>
 
-                        <p>
-                          <img
-                            src={user.images}
-                            alt=""
-                            style={{
-                              width: '50px',
-                              alignItems: 'center',
-                            }}
-                          />
-                        </p>
+                          <p>discountPercentage : {user.discountPercentage}</p>
 
-                      </>
-                      <Space wrap>
-                        <Button type="primary" onClick={() => showModal(user)}>
-                          Edit
-                        </Button>
-                        <Button
-                          type="primary"
-                          onClick={() => dispatch(deleteProduct(user.id))}
-                        >
-                          Delete
-                        </Button>
+                          <p>
+                            <img
+                              src={user.images}
+                              alt=""
+                              style={{
+                                width: '50px',
+                                alignItems: 'center',
+                              }}
+                            />
+                          </p>
+                          <p>
+                            <Rate allowHalf defaultValue={user.rating} />
+                          </p>
+                        </>
+                        <Space wrap>
+                          <Button type="primary" onClick={() => showModal(user)}>
+                            Edit
+                          </Button>
+                          <Button
+                            type="primary"
+                            onClick={() => handleDelete(user)}
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            type="primary"
+                            onClick={() => viewCard(user.id)}
+                          >
+                            View
+                          </Button>
 
-                      </Space>
+                        </Space>
 
-                    </Card.Grid>
-                  ))}
-                </Card>
+                      </Card.Grid>
+                    ))}
+                  </Card>
+                </Watermark>
               )}
             </Content>
           </Layout>

@@ -1,8 +1,4 @@
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -10,10 +6,10 @@ import { Link } from 'react-router-dom';
 const { Header, Content, Sider } = Layout;
 
 const menulist = [
+  { name: 'settings', path: '/settings' },
   { name: 'charts', path: '/charts' },
   { name: 'contact', path: '/contact' },
-  { name: 'back', path: './dashboard' },
-  { name: 'login', path: '/' },
+  { name: 'back', path: './box' },
 ];
 const items2 = menulist.map((menu, index) => {
   const key = String(index + 1);
@@ -24,7 +20,6 @@ const items2 = menulist.map((menu, index) => {
       <div>
         <Link to={menu.path}>{menu.name}</Link>
 
-        {/* <Link to="/Charts">Charts</Link> */}
       </div>
     ),
   };
@@ -89,7 +84,7 @@ const App = () => {
               background: colorBgContainer,
             }}
           >
-            This is a Chart page
+            This is a Settings page
           </Content>
         </Layout>
       </Layout>
